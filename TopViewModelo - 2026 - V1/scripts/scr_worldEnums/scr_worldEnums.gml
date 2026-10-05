@@ -1,0 +1,28 @@
+enum GAME_STATE 
+{
+    OVERWORLD,
+    BATTLE_TRANSITION,
+    BATTLE
+}
+
+enum BATTLE_STATE 
+{
+    START,
+    PLAYER_OPTION,
+    SELECT_MOVE,
+    EXECUTE_PLAYER_TURN,
+    EXECUTE_ENEMY_TURN,
+    CHECK_FAINT,
+    VICTORY,
+    DEFEAT,
+    RUN
+}
+
+enum ELEMENT 
+{
+    NORMAL,
+    FIRE,
+    WATER,
+    GRASS,
+    ELECTRIC
+}
