@@ -1,9 +1,9 @@
 {
   "$GMScript":"",
-  "%Name":"Scr_worldStates",
+  "%Name":"scr_worldStates",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"Scr_worldStates",
+  "name":"scr_worldStates",
   "parent":{
     "name":"Scripts",
     "path":"folders/Scripts.yy",

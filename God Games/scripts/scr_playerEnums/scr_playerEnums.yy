@@ -1,0 +1,13 @@
+{
+  "$GMScript":"",
+  "%Name":"scr_playerEnums",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_playerEnums",
+  "parent":{
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

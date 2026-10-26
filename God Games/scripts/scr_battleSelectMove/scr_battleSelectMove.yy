@@ -1,0 +1,13 @@
+{
+  "$GMScript":"",
+  "%Name":"scr_battleSelectMove",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_battleSelectMove",
+  "parent":{
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

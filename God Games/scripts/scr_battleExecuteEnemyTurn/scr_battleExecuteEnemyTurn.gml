@@ -1,22 +1,33 @@
 /// ------------------------------------------------------------------
-/// Estado de Execução do Turno do Inimigo (BATTLE_STATE.EXECUTE_ENEMY_TURN)
+/// Estado de Execução do Segundo Turno (BATTLE_STATE.EXECUTE_SECOND_TURN)
+/// Executa o ataque do segundo combatente (caso não tenha desmaiado)
 /// ------------------------------------------------------------------
-function scr_battleExecuteEnemyTurn()
+function scr_battleExecuteSecondTurn()
 {
-    // Seleção aleatória de golpe pelo inimigo
-    var _enemyMove = enemyCreature.moves[irandom(array_length(enemyCreature.moves) - 1)];
-    var _mult = scr_getTypeMultiplier(_enemyMove.element, playerCreature.element);
-    var _rawDmg = (((2 * 5 / 5 + 2) * _enemyMove.movePower * (enemyCreature.attack / playerCreature.defense)) / 50 + 2) * _mult;
-    var _damage = max(1, round(_rawDmg));
+    messageTimer--;
+    if (messageTimer <= 0)
+    {
+        var _secondDefenderCreature = (secondAttacker == "player") ? enemyCreature : playerCreature;
 
-    playerCreature.hp = max(0, playerCreature.hp - _damage);
-
-    var _effText = "";
-    if (_mult > 1.0) _effText = " E SUPER EFETIVO!";
-    else if (_mult < 1.0) _effText = " Nao foi muito efetivo...";
-
-    battleMessage = "O " + enemyCreature.name + " inimigo usou " + _enemyMove.name + "!" + _effText;
-    messageTimer = 100;
-
-    battleState = BATTLE_STATE.CHECK_FAINT;
+        // Se o defensor do 2º ataque desmaiou
+        if (_secondDefenderCreature.hp <= 0)
+        {
+            if (secondAttacker == "player")
+            {
+                battleState = BATTLE_STATE.VICTORY;
+                battleMessage = "O " + enemyCreature.name + " selvagem desmaiou! Voce venceu!";
+            }
+            else
+            {
+                battleState = BATTLE_STATE.DEFEAT;
+                battleMessage = playerCreature.name + " desmaiou! Voce foi derrotado...";
+            }
+            messageTimer = 120;
+        }
+        else
+        {
+            // Ambos os combatentes sobreviveram ao turno completo: Retorna ao menu de opções do jogador
+            battleState = BATTLE_STATE.PLAYER_OPTION;
+        }
+    }
 }
