@@ -9,22 +9,22 @@ function scr_getTypeMultiplier(_atkElement, _defElement)
 {
     if (_atkElement == ELEMENT.NORMAL || _defElement == ELEMENT.NORMAL) return 1.0;
 
-    if (_atkElement == ELEMENT.FIRE) {
-        if (_defElement == ELEMENT.GRASS) return 2.0;
-        if (_defElement == ELEMENT.WATER) return 0.5;
+    if (_atkElement == ELEMENT.SWORD) {
+        if (_defElement == ELEMENT.BOW) return 2.0;
+        if (_defElement == ELEMENT.SHIELD) return 0.5;
     }
-    if (_atkElement == ELEMENT.WATER) {
-        if (_defElement == ELEMENT.FIRE) return 2.0;
-        if (_defElement == ELEMENT.GRASS) return 0.5;
+    if (_atkElement == ELEMENT.BOW) {
+        if (_defElement == ELEMENT.SHIELD) return 2.0;
+        if (_defElement == ELEMENT.SWORD) return 0.5;
     }
-    if (_atkElement == ELEMENT.GRASS) {
-        if (_defElement == ELEMENT.WATER) return 2.0;
-        if (_defElement == ELEMENT.FIRE) return 0.5;
+    if (_atkElement == ELEMENT.SHIELD) {
+        if (_defElement == ELEMENT.SWORD) return 2.0;
+        if (_defElement == ELEMENT.BOW) return 0.5;
     }
     if (_atkElement == ELEMENT.ELECTRIC) {
         if (_defElement == ELEMENT.WATER) return 2.0;
         if (_defElement == ELEMENT.GRASS) return 0.5;
-    }
+	}
 
     return 1.0;
 }
@@ -33,10 +33,9 @@ function scr_getTypeMultiplier(_atkElement, _defElement)
 function scr_getElementName(_element)
 {
     switch (_element) {
-        case ELEMENT.FIRE:     return "Fogo";
-        case ELEMENT.WATER:    return "Água";
-        case ELEMENT.GRASS:    return "Planta";
-        case ELEMENT.ELECTRIC: return "Elétrico";
+        case ELEMENT.SWORD:     return "SWORD";
+        case ELEMENT.SHIELD:    return "SHIELD";
+        case ELEMENT.BOW:    return "BOW";
         default:               return "Normal";
     }
 }
@@ -100,6 +99,14 @@ function Creature(_name, _element, _maxHp, _attack, _defense, _speed, _moves) co
         }
         return max(1, round(speed * _mult));
     };
+	
+	static getEffectiveHP = function() {
+		var _mult = 1.0;
+		for (var i = 0; i < array_lenght(statusEffects); i++) {
+			if (statusEffects[i].type == STAT_BUFF.HP_UP) _mult *=1.5;
+		}
+		return max(1, round(hp * _mult));
+    };
 
     static applyBuff = function(_buffType, _duration) {
         if (_buffType == STAT_BUFF.NONE || _duration <= 0) return "";
@@ -118,6 +125,7 @@ function Creature(_name, _element, _maxHp, _attack, _defense, _speed, _moves) co
             case STAT_BUFF.DEF_DOWN: return name + " teve a Defesa reduzida (-30%)!";
             case STAT_BUFF.SPD_UP:   return name + " aumentou a Velocidade (+50%)!";
             case STAT_BUFF.SPD_DOWN: return name + " teve a Velocidade reduzida (-30%)!";
+			case STAT_BUFF.HP_UP:    return name + "teve sua vida recuperada!"
             default: return "";
         }
     };
@@ -139,15 +147,15 @@ function scr_initDatabase()
 
     // 1. Criar Banco de Golpes (Com Dano e Buffs/Debuffs)
     global.movesDatabase = [
-        new Move("Investida",    ELEMENT.NORMAL,   40, 100, "enemy"),
-        new Move("Brasa",        ELEMENT.FIRE,     50, 100, "enemy"),
-        new Move("Jato d'Água",  ELEMENT.WATER,    50, 100, "enemy"),
-        new Move("Chicote",      ELEMENT.GRASS,    50, 100, "enemy"),
-        new Move("Choque",       ELEMENT.ELECTRIC, 55, 100, "enemy"),
-        new Move("Afiar",        ELEMENT.NORMAL,    0, 100, "self",  STAT_BUFF.ATK_UP, 3),
-        new Move("Escudo",       ELEMENT.NORMAL,    0, 100, "self",  STAT_BUFF.DEF_UP, 3),
-        new Move("Acelerar",     ELEMENT.NORMAL,    0, 100, "self",  STAT_BUFF.SPD_UP, 3),
-        new Move("Rosnar",       ELEMENT.NORMAL,    0, 100, "enemy", STAT_BUFF.ATK_DOWN, 3)
+        new Move("Investida",    ELEMENT.NORMAL,    40, 100, "enemy"),
+        new Move("Slash",        ELEMENT.SWORD,     50, 100, "enemy"),
+        new Move("Bash",         ELEMENT.SHIELD,    50, 100, "enemy"),
+        new Move("Peeble throw", ELEMENT.BOW,       50, 100, "enemy"),
+        new Move("Warm up",      ELEMENT.NORMAL,    0, 100, "self",  STAT_BUFF.ATK_UP, 3),
+        new Move("Guard",        ELEMENT.NORMAL,    0, 100, "self",  STAT_BUFF.DEF_UP, 3),
+        new Move("Step it up",   ELEMENT.NORMAL,    0, 100, "self",  STAT_BUFF.SPD_UP, 3),
+        new Move("Intimidate",   ELEMENT.NORMAL,    0, 100, "enemy", STAT_BUFF.ATK_DOWN, 3),
+		new Move("Heal",         ELEMENT.NORMAL,    0, 100, "ally",  STAT_BUFF.HP_UP, 99) 
     ];
 
     // 2. Criar Banco de Criaturas

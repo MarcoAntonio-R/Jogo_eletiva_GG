@@ -27,10 +27,10 @@ enum BATTLE_STATE
 enum ELEMENT 
 {
     NORMAL,
-    FIRE,
-    WATER,
-    GRASS,
-    ELECTRIC
+    SWORD,
+    SHIELD,
+    BOW,
+    
 }
 
 enum STAT_BUFF 
@@ -41,5 +41,6 @@ enum STAT_BUFF
     DEF_UP,     // Aumenta Defesa (+50%)
     DEF_DOWN,   // Reduz Defesa (-30%)
     SPD_UP,     // Aumenta Velocidade (+50%)
-    SPD_DOWN    // Reduz Velocidade (-30%)
+    SPD_DOWN,    // Reduz Velocidade (-30%)
+	HP_UP        // Recupera vida (x%)
 }
